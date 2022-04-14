@@ -1,11 +1,9 @@
 from web3 import Web3
 import math
-import abi
-import dotenv, os, sys
+import abi, config
+import dotenv, os, sys, time
 
 
-MIN_BALANCE = 0.01
-   
 dir_path = os.path.dirname(os.path.realpath(__file__))
 dotenv.load_dotenv(dir_path+'/.env')
 
@@ -22,14 +20,16 @@ except:
     
 contract_adres = web3.toChecksumAddress("0xFFE811714ab35360b67eE195acE7C10D93f89D8C")
 contract = web3.eth.contract(address=contract_adres, abi=abi.ABI)
- 
 
-def send_transaction():      
+with open('round.txt') as f:
+    no_round = int(f.readline())
+
+def hydrate():
     nonce = web3.eth.get_transaction_count(address)
     
     tx = contract.functions.roll().buildTransaction({
         'nonce': nonce,
-        'gas': 2500000,
+        'gas': 500000,
         'gasPrice': web3.toWei('5','gwei'),
     })
 
@@ -37,18 +37,48 @@ def send_transaction():
     txn = web3.eth.send_raw_transaction(signed_tx.rawTransaction)
 
     with open(dir_path+'/log.txt','a') as file:
-        file.write(f" TX: {web3.toHex(txn)}\n")
+        file.write(f"{time.strftime(format('%d.%m %H:%M'))} Hydrate TX: {web3.toHex(txn)}\n")
 
-
-def main():
+def claim():
+    nonce = web3.eth.get_transaction_count(address)
+       
+    tx = contract.functions.claim().buildTransaction({
+        'nonce': nonce,
+        'gas': 500000,
+        'gasPrice': web3.toWei('5','gwei'),
+    })
     
-    if balance < MIN_BALANCE:
-        # print('balance BNB too small')
-        sys.exit()     
+    signed_tx = web3.eth.account.sign_transaction(tx, private_key=os.environ['KEY'])
+    txn = web3.eth.send_raw_transaction(signed_tx.rawTransaction)
+
+    with open(dir_path+'/log.txt','a') as file:
+        file.write(f"{time.strftime(format('%d.%m %H:%M'))} Claim TX: {web3.toHex(txn)}\n")
+
+def update_round():
+    global no_round
+    no_round += 1
+    with open('round.txt', 'w') as f:
+        f.write(f'{no_round}\n')
+         
+def main():
+    global no_round
+    
+    if balance < config.MIN_BALANCE:        
+        with open(dir_path+'/log.txt','a') as file:
+            file.write(f"{time.strftime(format('%d.%m %H:%M'))} BNB balance too low {balance}\n")
+        sys.exit()
         
-    send_transaction()
+    try:        
+        if (no_round % config.PERIOD == 0):            
+            claim()          
+            update_round()
+        else:            
+            hydrate()
+            update_round()
+    except:        
+        hydrate()
+        update_round()
 
 
 if __name__ == "__main__":
     main()
-    
