@@ -1,3 +1,4 @@
+![alt text](https://github.com/faflik/Drip_Faucet_AutoHydrate/blob/main/Diagram.png)
 Buy some VPS or Raspberry Pi to run script 24 hours per day, then follow steps below
 
 1. `pip install -r requirements.txt`
