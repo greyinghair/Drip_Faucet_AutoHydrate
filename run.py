@@ -21,7 +21,7 @@ except:
 contract_adres = web3.toChecksumAddress("0xFFE811714ab35360b67eE195acE7C10D93f89D8C")
 contract = web3.eth.contract(address=contract_adres, abi=abi.ABI)
 
-with open(dir_path+'round.txt') as f:
+with open(dir_path+'/round.txt') as f:
     no_round = int(f.readline())
 
 def hydrate():
@@ -57,7 +57,7 @@ def claim():
 def update_round():
     global no_round
     no_round += 1
-    with open(dir_path+'round.txt', 'w') as f:
+    with open(dir_path+'/round.txt', 'w') as f:
         f.write(f'{no_round}\n')
          
 def main():
