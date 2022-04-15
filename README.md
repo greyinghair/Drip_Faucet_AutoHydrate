@@ -22,7 +22,7 @@ Buy some VPS or Raspberry Pi to run script 24 hours per day, then follow steps b
    - PERIOD = 0         
         - 0 - hydrate every day
         - 1 - claim every day
-        - e.g. 4 - claim every fourth day
+        - e.g. 4 - claim every fourth day, hydrate on the rest
 
 If this is helpful, send me an airdrop for beer:
  0x74ABf1db8c8b45aD529Bd3012bE1990F605360D6
