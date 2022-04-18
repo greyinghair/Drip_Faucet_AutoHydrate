@@ -15,7 +15,9 @@ try:
     balance = web3.eth.getBalance(os.environ['ADDRESS'])
     balance = web3.fromWei(balance, 'ether')
 except:
-    print('Set correct .env file witch ADDRESS and KEY')
+    with open(dir_path + '/log.txt','a') as file:
+        print('Set correct .env file witch ADDRESS and KEY')
+        file.write("Set correct .env file witch ADDRESS and KEY\n")
     sys.exit()
     
 contract_adres = web3.toChecksumAddress("0xFFE811714ab35360b67eE195acE7C10D93f89D8C")
