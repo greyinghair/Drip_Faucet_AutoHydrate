@@ -1,4 +1,4 @@
-If you want to support me please use my [faucet reference link](drip.community/faucet?buddy=0xf81a4D3e44Daa168cdD9a0b97AA62F528e298858).
+If you want to support me please use my [faucet reference link](https://drip.community/faucet?buddy=0xf81a4D3e44Daa168cdD9a0b97AA62F528e298858).
 
 ![alt text](https://github.com/faflik/Drip_Faucet_AutoHydrate/blob/main/Diagram.png)
 
